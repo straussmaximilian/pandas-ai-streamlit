@@ -15,3 +15,7 @@ Run with:
 ## Streamlit Share
 
 Running [here.](https://straussmaximilian-pandas-ai-streamlit-app-sy55b1.streamlit.app/)
+
+## Demo
+Gif here:
+![Demo](https://user-images.githubusercontent.com/16521288/236584009-810732a4-6f7f-4c7c-86b3-acb858616966.gif)
