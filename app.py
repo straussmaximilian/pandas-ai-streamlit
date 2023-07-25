@@ -1,17 +1,17 @@
 import streamlit as st
 import pandas as pd
+import matplotlib.pyplot as plt
 from pandasai import PandasAI
 from pandasai.llm.openai import OpenAI
-import matplotlib.pyplot as plt
+from pandasai.middlewares.streamlit import StreamlitMiddleware
 
 
 def gen_prompt(prompt):
     if 'plot' in prompt.lower():
-        prompt = f"""
-        {prompt}.
-        Show the plot, and return the data in the following
-        JSON format: {{"x": , "y": , "plot_type":, "plot_title": }}
-        """
+        prompt = (f'{prompt}.'
+        'Show the plot, and return the data in the following '
+        f'JSON format: {{"x": , "y": , "plot_type":, "plot_title": }}. '
+        'Do not close the plot figure.')
     return prompt
 
 st.title("pandas-ai streamlit interface")
@@ -23,7 +23,7 @@ if "openai_key" not in st.session_state:
         key = st.text_input("OpenAI Key", value="", type="password")
         if st.form_submit_button("Submit"):
             if not len(key):
-                key = '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'
+                key = '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'
             st.session_state.openai_key = key
             st.session_state.prompt_history = []
             st.session_state.df = None
@@ -55,8 +55,8 @@ if "openai_key" in st.session_state:
         if submitted:
             with st.spinner():
                 llm = OpenAI(api_token=st.session_state.openai_key)
-                pandas_ai = PandasAI(llm)
-                x = pandas_ai(st.session_state.df, prompt=gen_prompt(question))
+                pandas_ai = PandasAI(llm, middlewares=[StreamlitMiddleware()], verbose=True)
+                x = pandas_ai.run(st.session_state.df, prompt=gen_prompt(question))
                 fig = plt.gcf()
                 if fig.get_axes():
                     st.pyplot(fig)
