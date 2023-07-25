@@ -1,10 +1,11 @@
+import os
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 from pandasai import PandasAI
 from pandasai.llm.openai import OpenAI
 from pandasai.middlewares.streamlit import StreamlitMiddleware
-
+from dotenv import load_dotenv
 
 def gen_prompt(prompt):
     if 'plot' in prompt.lower():
@@ -23,7 +24,8 @@ if "openai_key" not in st.session_state:
         key = st.text_input("OpenAI Key", value="", type="password")
         if st.form_submit_button("Submit"):
             if not len(key):
-                key = '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'
+                load_dotenv()
+                key = os.getenv('API_KEY')
             st.session_state.openai_key = key
             st.session_state.prompt_history = []
             st.session_state.df = None
