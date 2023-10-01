@@ -3,12 +3,13 @@ import pandas as pd
 from pandasai import PandasAI
 from pandasai.llm.openai import OpenAI
 import matplotlib.pyplot as plt
+import os
 
 st.title("pandas-ai streamlit interface")
 
 st.write("A demo interface for [PandasAI](https://github.com/gventuri/pandas-ai)")
 st.write(
-    "Looking for an example *.csv-file?, check [here](https://gist.github.com/netj/8836201)."
+    "Looking for an example *.csv-file?, check [here](https://gist.github.com/netj/8836201) (Download ZIP)."
 )
 
 if "openai_key" not in st.session_state:
@@ -18,6 +19,7 @@ if "openai_key" not in st.session_state:
             st.session_state.openai_key = key
             st.session_state.prompt_history = []
             st.session_state.df = None
+            st.success('Saved API key for this session.')
 
 if "openai_key" in st.session_state:
     if st.session_state.df is None:
@@ -38,10 +40,13 @@ if "openai_key" in st.session_state:
                 pandas_ai = PandasAI(llm)
                 x = pandas_ai.run(st.session_state.df, prompt=question)
 
-                fig = plt.gcf()
-                if fig.get_axes():
-                    st.pyplot(fig)
-                st.write(x)
+                if os.path.isfile('temp_chart.png'):
+                    im = plt.imread('temp_chart.png')
+                    st.image(im)
+                    os.remove('temp_chart.png')
+
+                if x is not None:
+                    st.write(x)
                 st.session_state.prompt_history.append(question)
 
     if st.session_state.df is not None:
