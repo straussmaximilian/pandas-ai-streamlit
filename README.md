@@ -1,21 +1,23 @@
 # pandas-ai-streamlit
 A streamlit interface for pandas-ai
 
-## Installation:
+## Installation & Running:
 
 ```
+git clone https://github.com/straussmaximilian/pandas-ai-streamlit.git
 conda create --name pandasai python=3.10
 conda activate pandasai
-pip install pandasai streamlit
+pip install pandasai streamlit BeautifulSoup4
+cd pandas-ai-streamlit
+streamlit run app.py
 ```
 
-Run with:
-`streamlit run app.py`
+Check requirements in case there are compatibility issues. Tested with `pandasai==1.2.8`.
 
 ## Streamlit Share
 
-Running [here.](https://straussmaximilian-pandas-ai-streamlit-app-sy55b1.streamlit.app/)
+Running [here](https://pandas-ai-gui.streamlit.app)
+Note: This is the stable version with pandas-ai version 0.2.2. 
 
-## Demo
-Gif here:
-![Demo](https://user-images.githubusercontent.com/16521288/236584009-810732a4-6f7f-4c7c-86b3-acb858616966.gif)
+## Notes
+- Updated to pandasai==1.2.8. Charts are stored as `temp_chart.png` and now they are loaded from there. The implementation is not perfect an might cause issues when having multiple concurrent users.
